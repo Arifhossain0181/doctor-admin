@@ -26,11 +26,11 @@ const AddDoctor = () => {
 
     // Prepare form data
     const formdata = new FormData();
-    formdata.append("docimg", docimg); // MUST MATCH backend multer field name
+    formdata.append("image", docimg); // Backend expects "image" not "docimg"
     formdata.append("name", name);
     formdata.append("email", email);
     formdata.append("password", password);
-    formdata.append("experience", experience);
+    formdata.append("experience", experience); // Already a number from the select
     formdata.append("fees", Number(fee));
     formdata.append("speciality", specialization);
     formdata.append("degree", degree);
@@ -45,7 +45,9 @@ const AddDoctor = () => {
       const res = await fetch(`${backend_url}/api/admin/add-doctor`, {
         method: "POST",
         body: formdata,
-        headers: { atoken: aToken },
+        headers: { 
+          'atoken': aToken
+        },
       });
 
       const data = await res.json();
@@ -149,7 +151,7 @@ const AddDoctor = () => {
             >
               <option value="">Select experience</option>
               {[...Array(20)].map((_, i) => (
-                <option key={i} value={`${i + 1} Year`}>{i + 1} Year</option>
+                <option key={i} value={i + 1}>{i + 1} Year</option>
               ))}
             </select>
           </div>
